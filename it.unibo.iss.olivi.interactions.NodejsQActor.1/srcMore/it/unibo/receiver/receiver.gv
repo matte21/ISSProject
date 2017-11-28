@@ -1,0 +1,18 @@
+/*
+*
+* A GraphViz DOT FSM description 
+* Please use a GraphViz visualizer (like http://www.webgraphviz.com)
+*  
+*/
+
+digraph finite_state_machine {
+	rankdir=LR
+	size="8,5"
+	
+	wait_msg [ color = red ][ fontcolor = red ][ penwidth = 3 ]
+	handle_msg [ color = black ][ fontcolor = black ][ penwidth = 3 ]
+	
+	handle_msg -> wait_msg [ label = "switch" ][ color = black ][ fontcolor = black ]
+	wait_msg -> wait_msg [ label = "timeout(100000000)" ][ color = green ][ fontcolor = green ]
+	wait_msg -> handle_msg [ label = "test_msg" ][ color = black ][ fontcolor = black ]
+}

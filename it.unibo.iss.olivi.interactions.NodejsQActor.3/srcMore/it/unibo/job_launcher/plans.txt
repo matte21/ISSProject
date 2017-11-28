@@ -1,0 +1,2 @@
+plan(1,init, sentence(true,move(print("job_launcher up and running")),'','' ))
+plan(1,launch_job, sentence(true,move(actorOp(launchJob( "./srcJS/customJob.js"))),'','' ))

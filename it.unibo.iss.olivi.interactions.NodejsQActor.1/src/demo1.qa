@@ -1,0 +1,19 @@
+System demo1
+
+Dispatch test_msg : test_msg(x)
+
+Context  ctx ip [ host="localhost" port=8000 ] 
+
+QActor receiver context ctx -g yellow {
+	Plan wait_msg normal 
+		actions [ 
+			println("receiver waiting for a message")	
+		]
+		transition whenTime 100000000 -> wait_msg,
+				   whenMsg test_msg -> handle_msg
+	Plan handle_msg
+		[
+			onMsg test_msg : test_msg(x) -> printCurrentMessage
+		]
+		switchTo wait_msg	
+}

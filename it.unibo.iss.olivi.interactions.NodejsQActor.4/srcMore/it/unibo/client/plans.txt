@@ -1,0 +1,5 @@
+plan(1,transmission, sentence(true,move(print("Client about to submit job")),'','' ))
+plan(2,transmission, sentence(true,move(actorOp(submitJob( "./srcJS/customJobs/getTemperature.js"))),'','' ))
+plan(3,transmission, sentence(true,move(print("Client submitted job")),'','' ))
+plan(1,wait_result, sentence(true,move(print("Client waiting for result")),'','' ))
+plan(1,collect_result, sentence(true,printCurrentMessage(''),'','' ))

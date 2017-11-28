@@ -1,0 +1,25 @@
+System demo4
+
+Dispatch result : result(payload)
+
+Context ctx ip [ host="localhost" port=8000]
+
+QActor client context ctx -g yellow {  
+	Plan transmission normal 
+		actions [
+			println("Client about to submit job"); 
+			actorOp submitJob("./srcJS/customJobs/getTemperature.js");
+			println("Client submitted job") 
+		]
+		switchTo wait_result
+	Plan wait_result
+		actions [
+			println("Client waiting for result") 
+		]
+		transition whenTime 20000 -> collect_result
+				   whenMsg result -> collect_result 
+	Plan collect_result
+		[
+			printCurrentMessage
+		]	
+} 

@@ -1,0 +1,32 @@
+System demo2
+
+Dispatch test_msg : test_msg(x)
+
+Context ctx ip [ host="localhost" port=8000 ] 
+
+QActor receiver context ctx -g yellow {
+	Plan wait_msg normal
+		actions [ 
+			println("receiver waiting for a message")	
+		]
+		transition whenTime 100000000 -> wait_msg,
+				   whenMsg test_msg -> handle_msg
+	Plan handle_msg	
+		[
+			onMsg test_msg : test_msg(x) -> printCurrentMessage
+		]
+		switchTo wait_msg
+}
+
+// It's called "sender_0" instead of "sender" only because "sender" is a reserved keyword
+QActor sender_0 context ctx -g cyan {
+	Plan init normal 
+		actions [ 
+			println("sender up and running")
+		]
+		switchTo send_msg
+	Plan send_msg
+		actions [ 
+			actorOp sendFromNodejs 
+		]
+}
