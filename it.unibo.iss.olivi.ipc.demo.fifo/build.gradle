@@ -1,0 +1,70 @@
+/*
+================================================================================
+USAGE:	 
+	gradle  eclipse	//to set the dependency on the library
+	gradle 	build
+================================================================================
+*/
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'java-library-distribution'
+
+/*
+--------------------------------------------------------------
+PROPERTIES
+--------------------------------------------------------------
+*/
+sourceCompatibility = "1.8"
+ext{
+	mainClassName = "it.unibo.iss.olivi.ipc.demo.fifo.FifoReader"
+}
+
+sourceSets {
+	main {
+		java {
+			srcDirs = ['src']
+		}
+	}
+	test {
+		 java {
+		   srcDirs = ['test']
+		 }
+	}
+}
+
+jar {
+ 	manifest {
+		attributes 'Main-Class': "$mainClassName"
+	}
+}
+
+distributions {
+    main{
+        baseName = "$mainClassName"
+    }
+}
+
+task copyInfoForDist << {
+   	copy {  
+		from '.'
+		into 'src/dist/'
+		include 'README.md'
+   	}
+   	copy {
+		from '.'
+		into 'src/dist/'
+		include 'buildFifo.sh'
+		fileMode = 0777   	
+   	}
+   	copy {  
+		from 'srcJs'
+		into 'src/dist/srcJS'
+   	}
+}
+task cleanDistDir(type: Delete) {
+	  delete 'src/dist'
+}
+
+jar.dependsOn cleanDistDir
+jar.dependsOn copyInfoForDist
