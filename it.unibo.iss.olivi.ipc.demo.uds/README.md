@@ -13,7 +13,7 @@ To run it:
 5) On one window, execute the command "java -jar it.unibo.iss.olivi.ipc.demo.fifo.jar"
 6) On the other window, execute the command "node srcJs/udsWriter/writer.js"
 
-It is crucial that you execute step 5 before step 6.
+**It is crucial that you execute step 5 before step 6.**
 
 Notes:
 
