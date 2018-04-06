@@ -1,0 +1,81 @@
+/*
+================================================================================
+USAGE:	 
+	gradle  eclipse	//to set the dependency on the library
+	gradle 	build
+================================================================================
+*/
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'java-library-distribution'
+
+/*
+--------------------------------------------------------------
+PROPERTIES
+--------------------------------------------------------------
+*/
+sourceCompatibility = "1.8"
+ext{
+	mainClassName = "it.unibo.iss.olivi.ipc.demo.uds.UdsReader"
+}
+
+sourceSets {
+	main {
+		java {
+			srcDirs = ['src']
+		}
+	}
+	test {
+		 java {
+		   srcDirs = ['test']
+		 }
+	}
+}
+
+jar {
+    doFirst {
+        from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } } 
+    }
+    exclude 'META-INF/*.RSA', 'META-INF/*.SF', 'META-INF/*.DSA'
+ 	
+ 	manifest {
+		attributes 'Main-Class': "$mainClassName"
+	}
+}
+
+distributions {
+    main{
+        baseName = "$mainClassName"
+    }
+}
+
+repositories {
+      mavenCentral()
+}
+
+dependencies {
+	// https://mvnrepository.com/artifact/com.github.jnr/jnr-unixsocket
+	compile group: 'com.github.jnr', name: 'jnr-unixsocket', version: '0.18'
+}
+
+task copyInfoForDist << {
+
+   	copy {  
+		from '.'
+		into 'src/dist/'
+		include 'README.md'
+   	}
+
+   	copy {  
+		from 'srcJS'
+		into 'src/dist/srcJS'
+   	}
+}
+
+task cleanDistDir(type: Delete) {
+	  delete 'src/dist'
+}
+
+jar.dependsOn cleanDistDir
+jar.dependsOn copyInfoForDist
